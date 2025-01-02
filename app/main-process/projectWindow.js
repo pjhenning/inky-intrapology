@@ -67,6 +67,7 @@ function ProjectWindow(filePath) {
 
             // Try to load settings 
             this.refreshProjectSettings(filePath);
+            this.loadIntrapologySettings(filePath);
         });
     }
     
@@ -210,6 +211,57 @@ ProjectWindow.prototype.refreshProjectSettings = function(rootInkFilePath) {
             self.settings = settings;
 
             completeSettings(settings);
+        });
+
+    });
+}
+
+ProjectWindow.prototype.loadIntrapologySettings = function(rootInkFilePath)  {
+    
+    let self = this;
+
+    /*
+    function completeIntrapologySettings(settings, err) {
+        if( events.onIntrapologyProjectSettingsChanged ) {
+            events.onIntrapologyProjectSettingsChanged(settings);
+        }
+
+        self.browserWindow.send("intrapology-settings-changed", self.intrapologySettings);
+
+        if( err ) {
+            //dialog.showErrorBox("Project Settings Error", err);
+        }
+    }
+    */
+
+    const basePath = path.dirname(rootInkFilePath);
+    const settingsPath = basePath + "settings.json";
+
+    fs.stat(settingsPath, (err, stats) => {
+        if( err || !stats.isFile() ) { 
+            // TODO: warn if not found
+            return;
+        }
+
+        fs.readFile(settingsPath, "utf8", (err, fileContent) => {
+
+            if( err ) {
+                return;
+            }
+            if( !fileContent ) {
+                return;
+            }
+
+            let settings = {};
+            try {
+                settings = JSON.parse(fileContent);
+            } catch(error) {
+                return;
+            }
+
+            self.intrapologySettings = settings;
+
+            // TODO: completeIntrapologySettings(settings);
         });
 
     });

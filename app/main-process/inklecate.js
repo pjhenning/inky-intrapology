@@ -1,6 +1,7 @@
 const child_process = require('child_process');
 const spawn = child_process.spawn;
 const fs = require('fs');
+const readline = require('readline');
 const path = require("path");
 const electron = require('electron');
 const ipc = electron.ipcMain;
@@ -30,9 +31,79 @@ if (process.platform == "darwin" || process.platform == "linux") {
     tempInkPath = path.join(process.env.temp, "inky_compile")
 }
 
+const dialogueRegex = /^[\W\S]*?[\s]*(\w+):/;
+
+/** 
+ * @param {string} line
+ * @param {number} lineNumber
+ * @param {string} filename
+ * @param {Array<string>} characterNames 
+ */
+function analyseLine(line, lineNumber, filename, characterNames) {
+    const issues = [];
+    const dialogueMatch = line.match(dialogueRegex);
+    if (dialogueMatch !== null) {
+        const characterName = dialogueMatch[1];
+        if (!characterNames.includes(characterName)) {
+            issues.push({
+                type: "ERROR",
+                filename,
+                lineNumber,
+                message: `"${characterName}" is not listed as a character name in settings.json. To use this name, make sure to add it to the 'callers' list.`
+            });
+        }
+
+        if (line.length > 128) {
+            issues.push({
+                type: "WARNING",
+                filename,
+                lineNumber,
+                message: "Dialogue block is longer than 128 characters. This may be difficult to read as a single subtitle, consider splitting it up."
+            });
+        }
+    }
+    // TODO: if line is not dialogue and not logic then warn?
+
+    return issues;
+}
+
+/**
+ * @param {string} inkPath 
+ * @param {string} filename 
+ * @param {Array<string>} characterNames
+ */
+async function doIntrapologyAnalysis(inkPath, filename, characterNames) {
+    const issues = [];
+    const fileStream = fs.createReadStream(inkPath);
+
+    const rl = readline.createInterface({
+        input: fileStream,
+        crlfDelay: Infinity,
+    });
+
+    let lineNumber = 1;
+    for await (const line of rl) {
+        const lineIssues = analyseLine(line, lineNumber, filename, characterNames);
+        if (lineIssues.length > 0) issues.push(...lineIssues);
+        lineNumber++;
+    }
+    return issues;
+}
+
 var sessions = {};
 
+/**
+ * @typedef {Object} CompileInstruction
+ * @property {string} mainName - ...
+ * @property {string} sessionId - ...
+ * @property {string} namespace - ...
+ * @property {Array<string>} characterNames - Names of characters that have been specified for the performance
+ */
 
+/**
+ * @param {CompileInstruction} compileInstruction
+ * @param {Electron.WebContents} requester
+ */
 function compile(compileInstruction, requester) {
 
     var sessionId = compileInstruction.sessionId;
@@ -59,6 +130,8 @@ function compile(compileInstruction, requester) {
     }
 
     var mainInkPath = path.join(uniqueDirPath, compileInstruction.mainName);
+
+    const intrapologyAnalysis = doIntrapologyAnalysis(mainInkPath, compileInstruction.mainName, compileInstruction.characterNames);
 
     var inklecateOptions = ["-ckj"];
 
@@ -203,7 +276,14 @@ function compile(compileInstruction, requester) {
                     }
                 }
 
-                requester.send('play-generated-errors', inkErrors, sessionId);
+                const inkErrorsCopy = inkErrors;
+                intrapologyAnalysis.then(intrapologyIssues =>  { // TODO: make sure processCloseExit doesn't complete before this is done
+                    if (intrapologyIssues.length > 0) {
+                        requester.send('play-generated-errors', inkErrorsCopy.concat(intrapologyIssues), sessionId);
+                    } else {
+                        requester.send('play-generated-errors', inkErrorsCopy, sessionId);
+                    }
+                });
                 inkErrors = [];
             }
             

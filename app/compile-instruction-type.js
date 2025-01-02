@@ -1,0 +1,9 @@
+/**
+ * @typedef {Object} CompileInstruction
+ * @property {string} mainName - ...
+ * @property {string} sessionId - ...
+ * @property {string} namespace - ...
+ * @property {Array<string>} characterNames - Names of characters that have been specified for the performance
+ */
+
+// use: @param {...WishGranter~Triforce} triforce

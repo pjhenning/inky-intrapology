@@ -49,12 +49,21 @@ function buildCompileInstruction() {
 
     sessionIdx += 1;
 
-    // Construct instruction object to send to inklecate.js
+    const characterNames =
+        project.intrapologySettings ?
+            project.intrapologySettings.characterNames :
+            [];
+
+    /**
+     * Construct instruction object to send to inklecate.js
+     * @type {CompileInstruction}
+     */
     var compileInstruction = {
         mainName: project.mainInk.filename(),
         updatedFiles: {},
         sessionId: `${namespace}_${sessionIdx}`,
-        namespace: namespace
+        namespace: namespace,
+        characterNames
     };
 
     project.files.forEach((inkFile) => {

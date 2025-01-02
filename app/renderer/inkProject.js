@@ -702,6 +702,10 @@ InkProject.prototype.refreshProjectSettings = function(newProjectSettings) {
     }
 }
 
+InkProject.prototype.refreshIntrapologySettings = function(newIntrapologySettings) {
+    this.intrapologySettings = newIntrapologySettings;
+}
+
 
 InkProject.setEvents = function(e) {
     InkProject.events = e;
@@ -770,6 +774,12 @@ ipcRenderer.on("project-tryClose", (event) => {
 ipcRenderer.on("project-settings-changed", (event, settings) => {
     if( InkProject.currentProject ) {
         InkProject.currentProject.refreshProjectSettings(settings);
+    }
+});
+
+ipcRenderer.on("intrapology-settings-changed", (event, settings) => {
+    if( InkProject.currentProject ) {
+        InkProject.currentProject.refreshIntrapologySettings(settings);
     }
 });
 
