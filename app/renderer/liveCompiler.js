@@ -52,7 +52,7 @@ function buildCompileInstruction() {
     const characterNames =
         project.intrapologySettings ?
             project.intrapologySettings.characterNames :
-            [];
+            ['Apple', 'Banana'];
 
     /**
      * Construct instruction object to send to inklecate.js

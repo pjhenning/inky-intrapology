@@ -51,11 +51,54 @@ function InkFile(anyPath, mainInkFile, isBrandNew, inkMode, events) {
     // removed Included files without warning the user.
     var initialContent = "";
     if( mainInkFile == null ) {
-        initialContent = "Once upon a time...\n\n"
-            + " * There were two choices.\n"
-            + " * There were four lines of content.\n\n"
-            + "- They lived happily ever after.\n"
-            + "    -> END\n"
+        initialContent = `VAR topic = "nothing"
+VAR excitementLevel = 1
+~ excitementLevel = 2
+
+-> Start
+
+== Start
+
+Apple: Hi, I'm the first video caller!
+
+Banana: Hi, I'm the second video caller!
+
+-> MultipleChoice
+
+== MultipleChoice
+
+@What should be our next topic of discussion?
+
+Apple: Here is some multiple-choice voting!
+
+Banana: What should be our next topic of discussion?
+
+* Apple: The weather!
+    ~ topic = "the weather"
+* Apple: Cats!
+    ~ topic = "cats"
+* Apple: Late-stage capitalism!
+    ~ topic = "late-stage capitalism"
+
+- -> WriteIn
+
+== WriteIn
+
+@Write any thoughts you have about {topic} here.
+
+Apple: Now it's time for some fun with write-in options!
+
+Banana: The audience is going to type stuff in and you are going to read it all!
+
+Apple: That's right!
+
+Apple: Firebase-read
+
++ z
+
+Banana: That's all, folks!
+
+->END`;
     }
     this.aceDocument = new Document(initialContent);
     this.aceSession = null;
