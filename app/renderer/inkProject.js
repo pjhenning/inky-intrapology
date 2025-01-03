@@ -349,17 +349,19 @@ InkProject.prototype.save = function() {
             const projectDir = path.dirname(this.mainInk.absolutePath());
             // TODO: update allSuccess var based on result of each of these
             if( wasUnsaved ) {
-                const intrapologyResourceDir = path.join(__dirname, "../intrapology-resources");
+                const intrapologyTemplateDir = path.join(__dirname, "../intrapology-template");
                 /** @param {string} src */
                 const filter = (src, _) => {
                     const file = path.basename(src);
                     return !(file === 'script.ink' || file === 'script.json' || file === '.DS_STORE');
                 };
-                fs.cpSync(intrapologyResourceDir, projectDir, {recursive: true, filter});
+                fs.cpSync(intrapologyTemplateDir, projectDir, {recursive: true, filter});
                 const settingsPath = projectDir + '/settings.json';
                 const rawSettings = fs.readFileSync(settingsPath, 'utf-8');
                 const uid = path.basename(projectDir) + '-' + crypto.randomUUID();
-                fs.writeFileSync(settingsPath, rawSettings.replace("$$PERF_ID$$", uid), 'utf-8');
+                const idEntryMatchStr = '"performanceId": "hello-world",';
+                const idEntryReplaceStr = `"performanceId": "${uid}",`
+                fs.writeFileSync(settingsPath, rawSettings.replace(idEntryMatchStr, idEntryReplaceStr), 'utf-8');
                 this.startFileWatching();
             }
 
