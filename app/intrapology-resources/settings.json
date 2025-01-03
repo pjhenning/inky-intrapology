@@ -1,5 +1,5 @@
 {
-	"performanceId": "hello-world",
+	"performanceId": "$$PERF_ID$$",
 	"modPassword": "butts",
 	"title": "Hello World",
 	"callers": [ "Apple", "Banana" ],

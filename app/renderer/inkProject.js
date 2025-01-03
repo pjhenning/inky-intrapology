@@ -1,4 +1,5 @@
 const {ipcRenderer} = require("electron");
+const { randomUUID } = require('crypto');
 const path = require("path");
 const fs = require("fs");
 const _ = require("lodash");
@@ -345,7 +346,28 @@ InkProject.prototype.save = function() {
         // May not be a success if cancelled, in which case we stop early
         if( success ) {
 
-            if( wasUnsaved ) this.startFileWatching();
+            const projectDir = path.dirname(this.mainInk.absolutePath());
+            // TODO: update allSuccess var based on result of each of these
+            if( wasUnsaved ) {
+                const intrapologyResourceDir = path.join(__dirname, "../intrapology-resources");
+                /** @param {string} src */
+                const filter = (src, _) => !src.includes("script.ink");
+                fs.cpSync(intrapologyResourceDir, projectDir, {recursive: true, filter});
+                const settingsPath = projectDir + '/settings.json';
+                const rawSettings = fs.readFileSync(settingsPath, 'utf-8');
+                const uid = path.basename(projectDir) + '-' + crypto.randomUUID();
+                fs.writeFileSync(settingsPath, rawSettings.replace("$$PERF_ID$$", uid), 'utf-8');
+                this.startFileWatching();
+            }
+
+            LiveCompiler.exportJson(false, (err, compiledJsonTempPath) => {
+                // TODO: better error message
+                if( err ) {
+                    alert(`${i18n._("Could not export:")} ${err}`);
+                    return;
+                }
+                copyFile(compiledJsonTempPath, projectDir + '/script.json');
+            });
 
             includeFiles.forEach(f => f.save(success => singleFileSaveComplete(f, success)));
         } 
