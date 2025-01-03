@@ -351,7 +351,10 @@ InkProject.prototype.save = function() {
             if( wasUnsaved ) {
                 const intrapologyResourceDir = path.join(__dirname, "../intrapology-resources");
                 /** @param {string} src */
-                const filter = (src, _) => !src.includes("script.ink");
+                const filter = (src, _) => {
+                    const file = path.basename(src);
+                    return !(file === 'script.ink' || file === 'script.json' || file === '.DS_STORE');
+                };
                 fs.cpSync(intrapologyResourceDir, projectDir, {recursive: true, filter});
                 const settingsPath = projectDir + '/settings.json';
                 const rawSettings = fs.readFileSync(settingsPath, 'utf-8');
