@@ -281,6 +281,9 @@ ToolbarView.setEvents({
         if( process.platform == "win32" ) {
             ipc.send("set-native-window-title", title);
         }
+    },
+    runIntrapology: () => {
+        ipc.send("run-intrapology");
     }
 });
 

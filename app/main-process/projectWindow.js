@@ -7,6 +7,7 @@ const fs = require("fs");
 const Inklecate = require("./inklecate.js").Inklecate;
 const Menu = electron.Menu;
 const i18n = require("./i18n/i18n.js");
+const {launchRunnerWindow} = require('./intrapologyRunner.js');
 
 var electronWindowOptions = {
   width: 1300,
@@ -425,6 +426,14 @@ ipc.on("project-settings-needs-reload", (event, rootInkFilePath) => {
 ipc.on("set-native-window-title", (event, newWindowTitle) => {
     var win = ProjectWindow.withWebContents(event.sender);
     win.browserWindow.title = newWindowTitle;
+});
+
+ipc.on("run-intrapology", (_event) => {
+    if (this.mainInkAbsPath) {
+        launchRunnerWindow();
+    } else {
+        dialog.showErrorBox("Error: No Project Loaded", "You must create or open an Intrapology project in order to run a test performance.");
+    }
 });
 
 exports.ProjectWindow = ProjectWindow;

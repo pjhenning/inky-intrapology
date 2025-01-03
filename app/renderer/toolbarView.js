@@ -6,7 +6,8 @@ var events = {
     rewind:   () => {},
     stepBack: () => {},
     selectIssue: () => {},
-    didSetTitle: () => {}
+    didSetTitle: () => {},
+    intrapologyRun: () => {}
 };
 
 function updateIssueSummary(issues, issueClickCallback) {
@@ -139,7 +140,12 @@ $(document).ready(function() {
         event.preventDefault();
     });
 
+    $("#toolbar .intrapology-run.button").on("click", function(event) {
+        events.runIntrapology();
+        event.preventDefault();
+    });
     
+
 
     var shouldBeHidden = false;
     $("#toolbar .issuesSummary, #toolbar .issue-popup").hover(function(e) {
