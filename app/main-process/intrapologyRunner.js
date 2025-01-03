@@ -40,26 +40,28 @@ function calculatePanelLayoutData(windowWidth, windowHeight, halfBorderThickness
 const WIN_BASE_WIDTH = 800;
 const WIN_BASE_HEIGHT = 600;
 
-const INTRAPOLOGY_INDEX_LOCATION = '../intrapology-resources/index.html'; // TODO: use project folder instead
-
 const BORDER_THICKNESS = 2;
 const HALF_BORDER = BORDER_THICKNESS / 2;
 
-function launchRunnerWindow() {
+/**
+ * @param {string} intrapologyProjectDir - Path to folder for current Intrapology project; used to find index.html
+ */
+function launchRunnerWindow(intrapologyProjectDir) {
+  const intrapologyIndexPath = intrapologyProjectDir + '/index.html';
 
   const win = new BaseWindow({width: WIN_BASE_WIDTH, height: WIN_BASE_HEIGHT});
 
   const audienceView = new WebContentsView();
-  audienceView.webContents.loadFile(INTRAPOLOGY_INDEX_LOCATION);
+  audienceView.webContents.loadFile(intrapologyIndexPath);
 
   const subtitlesView = new WebContentsView();
-  subtitlesView.webContents.loadFile(INTRAPOLOGY_INDEX_LOCATION, {hash: 'subtitles'});
+  subtitlesView.webContents.loadFile(intrapologyIndexPath, {hash: 'subtitles'});
 
   const actorView = new WebContentsView();
-  actorView.webContents.loadFile(INTRAPOLOGY_INDEX_LOCATION, {hash: 'caller'});
+  actorView.webContents.loadFile(intrapologyIndexPath, {hash: 'caller'});
 
   const moderatorView = new WebContentsView();
-  moderatorView.webContents.loadFile(INTRAPOLOGY_INDEX_LOCATION, {hash: 'moderator'});
+  moderatorView.webContents.loadFile(intrapologyIndexPath, {hash: 'moderator'});
 
   win.contentView.addChildView(audienceView);
   win.contentView.addChildView(actorView);

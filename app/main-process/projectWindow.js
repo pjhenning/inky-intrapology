@@ -428,9 +428,11 @@ ipc.on("set-native-window-title", (event, newWindowTitle) => {
     win.browserWindow.title = newWindowTitle;
 });
 
-ipc.on("run-intrapology", (_event) => {
-    if (this.mainInkAbsPath) {
-        launchRunnerWindow();
+ipc.on("run-intrapology", (event, tempJsonPath) => {
+    var win = ProjectWindow.withWebContents(event.sender);
+    if (win.mainInkAbsPath) {
+        // TODO: pipe temp json to intrapology app
+        launchRunnerWindow(path.dirname(win.mainInkAbsPath));
     } else {
         dialog.showErrorBox("Error: No Project Loaded", "You must create or open an Intrapology project in order to run a test performance.");
     }

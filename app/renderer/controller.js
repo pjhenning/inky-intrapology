@@ -283,7 +283,14 @@ ToolbarView.setEvents({
         }
     },
     runIntrapology: () => {
-        ipc.send("run-intrapology");
+        LiveCompiler.exportJson(false, (err, compiledJsonTempPath) => {
+            // TODO: better error message
+            if( err ) {
+                alert(`${i18n._("Could not export:")} ${err}`);
+                return;
+            }
+            ipc.send("run-intrapology", compiledJsonTempPath);
+        });
     }
 });
 
