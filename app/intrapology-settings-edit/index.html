@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <form>
+      <fieldset>
+        <legend>Intrapology Configuration</legend>
+        <div class="form-group">
+          <label>Moderator Passwork</label>
+          <input id="modPassword" type="text" class="form-control">
+        </div>
+        <div class="form-group">
+          <label>Performance Title</label>
+          <input id="title" type="text" class="form-control">
+        </div>
+        <div class="form-group">
+          <label>Character Names</label>
+          <input id="callers" type="text" class="form-control">
+        </div>
+        <div class="form-group">
+          <label>Video Call Embed Link</label>
+          <input id="videoCallEmbedLink" type="text" class="form-control">
+        </div>
+        <div class="form-group">
+          <label>Default Audience Message</label>
+          <textarea id="defaultAudienceMessage" class="form-control" rows="3"></textarea>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Visual Styling</legend>
+        <div class="form-group">
+          <label>Desktop Background</label>
+          <input id="desktopBackground" type="text" class="form-control">
+        </div>
+        <div class="form-group">
+          <label>Interact Background</label>
+          <input id="interactBackground" type="text" class="form-control">
+        </div>
+        <div class="form-group">
+          <label>Main Font</label>
+          <input id="mainFont" type="text" class="form-control">
+        </div>
+        <div class="form-group">
+          <label>Main Text Color</label>
+          <div class="color-picker">
+            <input id="mainTextColor" class="color-preview" data-function="color-picker" data-format="rgb">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Taskbar Background</label>
+          <input id="taskbarBackground" type="text" class="form-control">
+        </div>
+        <div class="form-group">
+          <label>Taskbar Text Color</label>
+          <div class="color-picker">
+            <input id="taskbarTextColor" class="color-preview" data-function="color-picker" data-format="rgb">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Taskbar Highlight Color</label>
+          <div class="color-picker">
+            <input id="taskbarHighlightColor" class="color-preview" data-function="color-picker" data-format="rgb">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Button Background</label>
+          <input id="buttonBackground" type="text" class="form-control">
+        </div>
+        <div class="form-group">
+          <label>Button Background (Hover)</label>
+          <input id="buttonBackgroundHover" type="text" class="form-control">
+        </div>
+        <div class="form-group">
+          <label>Button Text Color</label>
+          <div class="color-picker">
+            <input id="buttonTextColor" class="color-preview" data-function="color-picker" data-format="rgb">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Main Highlight Background</label>
+          <div class="color-picker">
+            <input id="mainHighlightBackground" class="color-preview" data-function="color-picker" data-format="rgb">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Alt Highlight Background</label>
+          <input id="altHighlightBackground" type="text" class="form-control">
+        </div>
+        <div class="form-group">
+          <label>Highlight Text Color</label>
+          <div class="color-picker">
+            <input id="highlightTextColor" class="color-preview" data-function="color-picker" data-format="rgb">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Subtitles Background</label>
+          <input id="subtitlesBackground" type="text" class="form-control">
+        </div>
+        <div class="form-group">
+          <label>Subtitles Text Color</label>
+          <div class="color-picker">
+            <input id="subtitlesTextColor" class="color-preview" data-function="color-picker" data-format="rgb">
+          </div>
+        </div>
+      </fieldset>
+      <button type="submit" class="btn btn-form btn-primary">Save</button>
+    </form>
+  </body>
+  <script>
+    require('./logic.js');
+  </script>
+</html>

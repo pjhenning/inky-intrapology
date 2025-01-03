@@ -1,8 +1,8 @@
 {
   "name": "inky",
-  "productName": "Inky",
-  "version": "0.15.1",
-  "description": "An editor for ink",
+  "productName": "Intrapology Editor",
+  "version": "0.0.1",
+  "description": "An editor for Intrapology",
   "main": "main-process/main.js",
   "repository": {
     "type": "git",
@@ -20,13 +20,14 @@
     "narrative",
     "editor"
   ],
-  "author": "inkle Ltd",
+  "author": "Intrapology",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/inkly/inky/issues"
   },
   "homepage": "http://www.inklestudios.com/ink",
   "dependencies": {
+    "@thednp/color-picker": "^2.0.3",
     "chokidar": "^3.6.0",
     "fuzzaldrin-plus": "^0.6.0",
     "inkjs": "^2.2.3",

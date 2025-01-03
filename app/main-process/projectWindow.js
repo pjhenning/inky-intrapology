@@ -43,7 +43,11 @@ var events = {
 };
 
 
+/** @constructor */
 function ProjectWindow(filePath) {
+    /** @type {IntrapologySettings | undefined} */
+    this.intrapologySettings = undefined;
+
     const getThemeFromMenu = () => Menu.getApplicationMenu().items.find(
         e => e.label.toLowerCase() === '&view'
     ).submenu.items.find(
@@ -410,7 +414,7 @@ ipc.on("main-file-saved", (event, absFilePath) => {
 
     var win = ProjectWindow.withWebContents(event.sender);
     win.mainInkAbsPath = absFilePath;
-    win.refreshProjectSettings(absFilePath);
+    win.refreshProjectSettings(absFilePath); // TODO: refresh intrapology settings as well?
 });
 
 ipc.on("project-final-close", (event) => {
