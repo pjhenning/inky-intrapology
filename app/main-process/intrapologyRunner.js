@@ -1,3 +1,4 @@
+const fs = require('fs');
 const { BaseWindow, WebContentsView } = require('electron');
 
 /**
@@ -43,10 +44,38 @@ const WIN_BASE_HEIGHT = 600;
 const BORDER_THICKNESS = 2;
 const HALF_BORDER = BORDER_THICKNESS / 2;
 
+/** 
+ * @param {string} intrapologyProjectDir - Path to folder for current Intrapology project
+ * @returns {Promise<IntrapologySettings>} 
+ * */
+async function loadIntrapologyProjectSettings(intrapologyProjectDir) {
+  const intrapologySettingsPath = intrapologyProjectDir + '/settings.json';
+  return new Promise((resolve, reject) => {
+    fs.readFile(intrapologySettingsPath, "utf8", (err, fileContent) => {
+      if (err) {
+        reject(err);
+      }
+      if (!fileContent) {
+        reject("Settings file is empty :/");
+      }
+  
+      /** @type {IntrapologySettings} */
+      let settings = {};
+      try {
+        settings = JSON.parse(fileContent);
+      } catch (error) {
+        reject(error);
+      }
+  
+      resolve(settings);
+    });
+  });
+}
+
 /**
  * @param {string} intrapologyProjectDir - Path to folder for current Intrapology project; used to find index.html
  */
-function launchRunnerWindow(intrapologyProjectDir) {
+async function launchRunnerWindow(intrapologyProjectDir) {
   const intrapologyIndexPath = intrapologyProjectDir + '/index.html';
 
   const win = new BaseWindow({width: WIN_BASE_WIDTH, height: WIN_BASE_HEIGHT});
@@ -61,7 +90,8 @@ function launchRunnerWindow(intrapologyProjectDir) {
   actorView.webContents.loadFile(intrapologyIndexPath, {hash: 'caller'});
 
   const moderatorView = new WebContentsView();
-  moderatorView.webContents.loadFile(intrapologyIndexPath, {hash: 'moderator'});
+  const {modPassword} = await loadIntrapologyProjectSettings(intrapologyProjectDir);
+  moderatorView.webContents.loadFile(intrapologyIndexPath, {hash: 'moderator', query: {resetAuth: modPassword}});
 
   win.contentView.addChildView(audienceView);
   win.contentView.addChildView(actorView);
