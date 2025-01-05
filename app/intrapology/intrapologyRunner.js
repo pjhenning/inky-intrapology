@@ -1,5 +1,5 @@
-const fs = require('fs');
 const { BaseWindow, WebContentsView } = require('electron');
+const {loadIntrapologyProjectSettings} = require('./common.js');
 
 /**
  * Calculate panel width or height and offset from window width or height and 1/2 border thickness
@@ -43,34 +43,6 @@ const WIN_BASE_HEIGHT = 600;
 
 const BORDER_THICKNESS = 2;
 const HALF_BORDER = BORDER_THICKNESS / 2;
-
-/** 
- * @param {string} intrapologyProjectDir - Path to folder for current Intrapology project
- * @returns {Promise<IntrapologySettings>} 
- * */
-async function loadIntrapologyProjectSettings(intrapologyProjectDir) {
-  const intrapologySettingsPath = intrapologyProjectDir + '/settings.json';
-  return new Promise((resolve, reject) => {
-    fs.readFile(intrapologySettingsPath, "utf8", (err, fileContent) => {
-      if (err) {
-        reject(err);
-      }
-      if (!fileContent) {
-        reject("Settings file is empty :/");
-      }
-  
-      /** @type {IntrapologySettings} */
-      let settings = {};
-      try {
-        settings = JSON.parse(fileContent);
-      } catch (error) {
-        reject(error);
-      }
-  
-      resolve(settings);
-    });
-  });
-}
 
 /**
  * @param {string} intrapologyProjectDir - Path to folder for current Intrapology project; used to find index.html

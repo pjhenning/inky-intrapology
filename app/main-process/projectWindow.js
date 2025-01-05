@@ -7,7 +7,8 @@ const fs = require("fs");
 const Inklecate = require("./inklecate.js").Inklecate;
 const Menu = electron.Menu;
 const i18n = require("./i18n/i18n.js");
-const {launchRunnerWindow} = require('./intrapologyRunner.js');
+const {launchRunnerWindow} = require('../intrapology/intrapologyRunner.js');
+const { loadIntrapologyProjectSettings } = require('../intrapology/common.js');
 
 var electronWindowOptions = {
   width: 1300,
@@ -240,36 +241,13 @@ ProjectWindow.prototype.loadIntrapologySettings = function(rootInkFilePath)  {
     */
 
     const basePath = path.dirname(rootInkFilePath);
-    const settingsPath = basePath + "settings.json";
 
-    fs.stat(settingsPath, (err, stats) => {
-        if( err || !stats.isFile() ) { 
-            // TODO: warn if not found
-            return;
-        }
-
-        fs.readFile(settingsPath, "utf8", (err, fileContent) => {
-
-            if( err ) {
-                return;
-            }
-            if( !fileContent ) {
-                return;
-            }
-
-            let settings = {};
-            try {
-                settings = JSON.parse(fileContent);
-            } catch(error) {
-                return;
-            }
-
+    loadIntrapologyProjectSettings(basePath)
+        .then(settings => {
             self.intrapologySettings = settings;
-
-            // TODO: completeIntrapologySettings(settings);
-        });
-
-    });
+            // TODO: completeIntrapologySettings(settings); ?
+        })
+        .catch(r => console.log('Unable to load settings for Intrapology project:', r));
 }
 
 
