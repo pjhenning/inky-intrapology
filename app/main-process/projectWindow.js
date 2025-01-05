@@ -9,6 +9,7 @@ const Menu = electron.Menu;
 const i18n = require("./i18n/i18n.js");
 const {launchRunnerWindow} = require('../intrapology/intrapologyRunner.js');
 const { loadIntrapologyProjectSettings } = require('../intrapology/common.js');
+const { launchSettingsEditor } = require('../intrapology/intrapology-settings-edit/main.js');
 
 var electronWindowOptions = {
   width: 1300,
@@ -417,6 +418,15 @@ ipc.on("run-intrapology", (event, tempJsonPath) => {
         launchRunnerWindow(path.dirname(win.mainInkAbsPath));
     } else {
         dialog.showErrorBox("Error: No Project Loaded", "You must create or open an Intrapology project in order to run a test performance.");
+    }
+});
+
+ipc.on("intrapology-settings-edit", event => {
+    var win = ProjectWindow.withWebContents(event.sender);
+    if (win.mainInkAbsPath) {
+        launchSettingsEditor(path.dirname(win.mainInkAbsPath));
+    } else {
+        dialog.showErrorBox("Error: No Project Loaded", "Cannot edit settings for nonexistent project.");
     }
 });
 

@@ -33,11 +33,11 @@ const fs = require('fs');
 /** 
  * @param {string} intrapologyProjectDir - Path to folder for current Intrapology project
  * @returns {Promise<IntrapologySettings>} 
- * */
+ */
 exports.loadIntrapologyProjectSettings = async function(intrapologyProjectDir) {
   const intrapologySettingsPath = intrapologyProjectDir + '/settings.json';
   return new Promise((resolve, reject) => {
-    fs.stat(settingsPath, (statErr, stats) => {
+    fs.stat(intrapologySettingsPath, (statErr, stats) => {
       if (statErr) reject(statErr);
       if (!stats.isFile()) reject("Can't find settings file.");
       if( statErr || !stats.isFile() ) { 
@@ -56,5 +56,38 @@ exports.loadIntrapologyProjectSettings = async function(intrapologyProjectDir) {
         }
       });
     })
+  });
+}
+
+/** 
+ * @param {string} intrapologyProjectDir - Path to folder for current Intrapology project
+ * @returns {IntrapologySettings}
+ */
+exports.loadIntrapologyProjectSettingsSync = function(intrapologyProjectDir) {
+  const intrapologySettingsPath = intrapologyProjectDir + '/settings.json';
+  const stats = fs.statSync(intrapologySettingsPath);
+  if (!stats.isFile()) return;
+  const fileContent = fs.readFileSync(intrapologySettingsPath, 'utf-8');
+  try {
+    const settings = JSON.parse(fileContent);
+    return settings
+  } catch (jsonParseError) {
+    return;
+  }
+}
+
+/**
+ * @param {IntrapologySettings} settings
+ * @param {string} intrapologyProjectDir
+ * @returns {Promise<void>}
+ */
+exports.saveIntrapologyProjectSettings = async function(settings, intrapologyProjectDir) {
+  const intrapologySettingsPath = intrapologyProjectDir + '/settings.json';
+  return new Promise((resolve, reject) => {
+    const contents = JSON.stringify(settings, null, '\t');
+    fs.writeFile(intrapologySettingsPath, contents, 'utf-8', (error) => {
+      if (error) reject(error);
+      else resolve();
+    });
   });
 }

@@ -291,6 +291,9 @@ ToolbarView.setEvents({
             }
             ipc.send("run-intrapology", compiledJsonTempPath);
         });
+    },
+    intrapologySettingsEdit: () => {
+        ipc.send("intrapology-settings-edit");
     }
 });
 

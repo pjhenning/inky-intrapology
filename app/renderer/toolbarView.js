@@ -7,7 +7,8 @@ var events = {
     stepBack: () => {},
     selectIssue: () => {},
     didSetTitle: () => {},
-    intrapologyRun: () => {}
+    intrapologyRun: () => {},
+    intrapologySettingsEdit: () => {}
 };
 
 function updateIssueSummary(issues, issueClickCallback) {
@@ -115,6 +116,11 @@ $(document).ready(function() {
 
     $("#toolbar .knot-toggle.button").on("click", function(event) {
         events.toggleSidebar("#knot-stitch-wrapper", ".knot-toggle.button");
+        event.preventDefault();
+    });
+
+    $("#toolbar .intrapology-settings.button").on("click", function(event) {
+        events.intrapologySettingsEdit();
         event.preventDefault();
     });
 
