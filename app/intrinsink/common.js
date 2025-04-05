@@ -1,7 +1,7 @@
 const fs = require('fs');
 
 /**
- * @typedef {Object} IntrapologyStyles
+ * @typedef {Object} IntrinsinkStyles
  * @property {string} desktopBackground
  * @property {string} interactBackground
  * @property {string} mainFont
@@ -20,31 +20,31 @@ const fs = require('fs');
  */
 
 /**
- * @typedef {Object} IntrapologySettings
+ * @typedef {Object} IntrinsinkSettings
  * @property {string} performanceId
  * @property {string} modPassword
  * @property {string} title
  * @property {Array<string>} callers
  * @property {string} videoCallEmbedLink
  * @property {string} defaultAudienceMessage
- * @property {IntrapologyStyles} styles
+ * @property {IntrinsinkStyles} styles
  */
 
 /** 
- * @param {string} intrapologyProjectDir - Path to folder for current Intrapology project
- * @returns {Promise<IntrapologySettings>} 
+ * @param {string} intrinsinkProjectDir - Path to folder for current Intrinsink project
+ * @returns {Promise<IntrinsinkSettings>} 
  */
-exports.loadIntrapologyProjectSettings = async function(intrapologyProjectDir) {
-  const intrapologySettingsPath = intrapologyProjectDir + '/settings.json';
+exports.loadIntrinsinkProjectSettings = async function(intrinsinkProjectDir) {
+  const intrinsinkSettingsPath = intrinsinkProjectDir + '/settings.json';
   return new Promise((resolve, reject) => {
-    fs.stat(intrapologySettingsPath, (statErr, stats) => {
+    fs.stat(intrinsinkSettingsPath, (statErr, stats) => {
       if (statErr) reject(statErr);
       if (!stats.isFile()) reject("Can't find settings file.");
       if( statErr || !stats.isFile() ) { 
           // TODO: warn if not found
           return;
       }
-      fs.readFile(intrapologySettingsPath, "utf8", (readError, fileContent) => {
+      fs.readFile(intrinsinkSettingsPath, "utf8", (readError, fileContent) => {
         if (readError) reject(readError);
         if (!fileContent) reject("Settings file is empty :/");
     
@@ -60,14 +60,14 @@ exports.loadIntrapologyProjectSettings = async function(intrapologyProjectDir) {
 }
 
 /** 
- * @param {string} intrapologyProjectDir - Path to folder for current Intrapology project
- * @returns {IntrapologySettings}
+ * @param {string} intrinsinkProjectDir - Path to folder for current Intrinsink project
+ * @returns {IntrinsinkSettings}
  */
-exports.loadIntrapologyProjectSettingsSync = function(intrapologyProjectDir) {
-  const intrapologySettingsPath = intrapologyProjectDir + '/settings.json';
-  const stats = fs.statSync(intrapologySettingsPath);
+exports.loadIntrinsinkProjectSettingsSync = function(intrinsinkProjectDir) {
+  const intrinsinkSettingsPath = intrinsinkProjectDir + '/settings.json';
+  const stats = fs.statSync(intrinsinkSettingsPath);
   if (!stats.isFile()) return;
-  const fileContent = fs.readFileSync(intrapologySettingsPath, 'utf-8');
+  const fileContent = fs.readFileSync(intrinsinkSettingsPath, 'utf-8');
   try {
     const settings = JSON.parse(fileContent);
     return settings
@@ -77,15 +77,15 @@ exports.loadIntrapologyProjectSettingsSync = function(intrapologyProjectDir) {
 }
 
 /**
- * @param {IntrapologySettings} settings
- * @param {string} intrapologyProjectDir
+ * @param {IntrinsinkSettings} settings
+ * @param {string} intrinsinkProjectDir
  * @returns {Promise<void>}
  */
-exports.saveIntrapologyProjectSettings = async function(settings, intrapologyProjectDir) {
-  const intrapologySettingsPath = intrapologyProjectDir + '/settings.json';
+exports.saveIntrinsinkProjectSettings = async function(settings, intrinsinkProjectDir) {
+  const intrinsinkSettingsPath = intrinsinkProjectDir + '/settings.json';
   return new Promise((resolve, reject) => {
     const contents = JSON.stringify(settings, null, '\t');
-    fs.writeFile(intrapologySettingsPath, contents, 'utf-8', (error) => {
+    fs.writeFile(intrinsinkSettingsPath, contents, 'utf-8', (error) => {
       if (error) reject(error);
       else resolve();
     });

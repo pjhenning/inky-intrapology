@@ -12,9 +12,9 @@ const ignoreProps = ['performanceId', 'callers', 'styles'];
 
 const colorProps = ['mainTextColor', 'taskbarTextColor', 'taskbarHighlightColor', 'buttonTextColor', 'mainHighlightBackground', 'highlightTextColor', 'subtitlesTextColor'];
 
-/** @param {IntrapologySettings} initialSettings  */
+/** @param {IntrinsinkSettings} initialSettings  */
 function getNewSettings(initialSettings) {
-  /** @type {IntrapologySettings} */
+  /** @type {IntrinsinkSettings} */
   let newSettings = {
     performanceId: initialSettings.performanceId,
     styles: {}
@@ -41,7 +41,7 @@ function getNewSettings(initialSettings) {
   return newSettings;
 }
 
-/** @param {IntrapologySettings} initialSettings  */
+/** @param {IntrinsinkSettings} initialSettings  */
 function initPage(initialSettings) {
 
   for (const [propName, propVal] of Object.entries(initialSettings)) {

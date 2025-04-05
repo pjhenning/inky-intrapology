@@ -1,5 +1,5 @@
 const { BaseWindow, WebContentsView } = require('electron');
-const {loadIntrapologyProjectSettings} = require('./common.js');
+const {loadIntrinsinkProjectSettings: loadIntrinsinkProjectSettings} = require('./common.js');
 
 /**
  * Calculate panel width or height and offset from window width or height and 1/2 border thickness
@@ -45,7 +45,7 @@ const BORDER_THICKNESS = 2;
 const HALF_BORDER = BORDER_THICKNESS / 2;
 
 /**
- * @param {string} intrapologyProjectDir - Path to folder for current Intrapology project; used to find index.html
+ * @param {string} intrapologyProjectDir - Path to folder for current Intrinsink project; used to find index.html
  */
 async function launchRunnerWindow(intrapologyProjectDir) {
   const intrapologyIndexPath = intrapologyProjectDir + '/index.html';
@@ -62,7 +62,7 @@ async function launchRunnerWindow(intrapologyProjectDir) {
   actorView.webContents.loadFile(intrapologyIndexPath, {hash: 'caller'});
 
   const moderatorView = new WebContentsView();
-  const {modPassword} = await loadIntrapologyProjectSettings(intrapologyProjectDir);
+  const {modPassword} = await loadIntrinsinkProjectSettings(intrapologyProjectDir);
   moderatorView.webContents.loadFile(intrapologyIndexPath, {hash: 'moderator', query: {resetAuth: modPassword}});
 
   win.contentView.addChildView(audienceView);

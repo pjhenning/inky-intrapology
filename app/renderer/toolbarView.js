@@ -147,7 +147,7 @@ $(document).ready(function() {
     });
 
     $("#toolbar .intrapology-run.button").on("click", function(event) {
-        events.runIntrapology();
+        events.runIntrinsink();
         event.preventDefault();
     });
     

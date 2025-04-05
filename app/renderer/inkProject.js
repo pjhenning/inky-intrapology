@@ -729,8 +729,8 @@ InkProject.prototype.refreshProjectSettings = function(newProjectSettings) {
     }
 }
 
-InkProject.prototype.refreshIntrapologySettings = function(newIntrapologySettings) {
-    this.intrapologySettings = newIntrapologySettings;
+InkProject.prototype.refreshIntrinsinkSettings = function(newIntrinsinkSettings) {
+    this.intrapologySettings = newIntrinsinkSettings;
 }
 
 
@@ -806,7 +806,7 @@ ipcRenderer.on("project-settings-changed", (event, settings) => {
 
 ipcRenderer.on("intrapology-settings-changed", (event, settings) => {
     if( InkProject.currentProject ) {
-        InkProject.currentProject.refreshIntrapologySettings(settings);
+        InkProject.currentProject.refreshIntrinsinkSettings(settings);
     }
 });
 

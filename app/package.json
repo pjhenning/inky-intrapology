@@ -1,8 +1,8 @@
 {
   "name": "inky",
-  "productName": "Intrapology Editor",
+  "productName": "Intrinsink Editor",
   "version": "0.0.1",
-  "description": "An editor for Intrapology",
+  "description": "An editor for Intrinsink",
   "main": "main-process/main.js",
   "repository": {
     "type": "git",
@@ -20,7 +20,7 @@
     "narrative",
     "editor"
   ],
-  "author": "Intrapology",
+  "author": "Intrinsink",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/inkly/inky/issues"

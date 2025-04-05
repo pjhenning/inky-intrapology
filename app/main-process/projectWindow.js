@@ -7,9 +7,9 @@ const fs = require("fs");
 const Inklecate = require("./inklecate.js").Inklecate;
 const Menu = electron.Menu;
 const i18n = require("./i18n/i18n.js");
-const {launchRunnerWindow} = require('../intrapology/intrapologyRunner.js');
-const { loadIntrapologyProjectSettings } = require('../intrapology/common.js');
-const { launchSettingsEditor } = require('../intrapology/intrapology-settings-edit/main.js');
+const {launchRunnerWindow} = require('../intrinsink/intrinsinkRunner.js');
+const { loadIntrinsinkProjectSettings: loadIntrinsinkProjectSettings } = require('../intrinsink/common.js');
+const { launchSettingsEditor } = require('../intrinsink/intrinsink-settings-edit/main.js');
 
 var electronWindowOptions = {
   width: 1300,
@@ -47,7 +47,7 @@ var events = {
 
 /** @constructor */
 function ProjectWindow(filePath) {
-    /** @type {IntrapologySettings | undefined} */
+    /** @type {IntrinsinkSettings | undefined} */
     this.intrapologySettings = undefined;
 
     const getThemeFromMenu = () => Menu.getApplicationMenu().items.find(
@@ -74,7 +74,7 @@ function ProjectWindow(filePath) {
 
             // Try to load settings 
             this.refreshProjectSettings(filePath);
-            this.loadIntrapologySettings(filePath);
+            this.loadIntrinsinkSettings(filePath);
         });
     }
     
@@ -223,14 +223,14 @@ ProjectWindow.prototype.refreshProjectSettings = function(rootInkFilePath) {
     });
 }
 
-ProjectWindow.prototype.loadIntrapologySettings = function(rootInkFilePath)  {
+ProjectWindow.prototype.loadIntrinsinkSettings = function(rootInkFilePath)  {
     
     let self = this;
 
     /*
-    function completeIntrapologySettings(settings, err) {
-        if( events.onIntrapologyProjectSettingsChanged ) {
-            events.onIntrapologyProjectSettingsChanged(settings);
+    function completeIntrinsinkSettings(settings, err) {
+        if( events.onIntrinsinkProjectSettingsChanged ) {
+            events.onIntrinsinkProjectSettingsChanged(settings);
         }
 
         self.browserWindow.send("intrapology-settings-changed", self.intrapologySettings);
@@ -243,12 +243,12 @@ ProjectWindow.prototype.loadIntrapologySettings = function(rootInkFilePath)  {
 
     const basePath = path.dirname(rootInkFilePath);
 
-    loadIntrapologyProjectSettings(basePath)
+    loadIntrinsinkProjectSettings(basePath)
         .then(settings => {
-            self.intrapologySettings = settings;
-            // TODO: completeIntrapologySettings(settings); ?
+            self.intrinsinkSettings = settings;
+            // TODO: completeIntrinsinkSettings(settings); ?
         })
-        .catch(r => console.log('Unable to load settings for Intrapology project:', r));
+        .catch(r => console.log('Unable to load settings for Intrinsink project:', r));
 }
 
 
@@ -417,7 +417,7 @@ ipc.on("run-intrapology", (event, tempJsonPath) => {
         // TODO: pipe temp json to intrapology app
         launchRunnerWindow(path.dirname(win.mainInkAbsPath));
     } else {
-        dialog.showErrorBox("Error: No Project Loaded", "You must create or open an Intrapology project in order to run a test performance.");
+        dialog.showErrorBox("Error: No Project Loaded", "You must create or open an Intrinsink project in order to run a test performance.");
     }
 });
 

@@ -72,7 +72,7 @@ function analyseLine(line, lineNumber, filename, characterNames) {
  * @param {string} filename 
  * @param {Array<string>} characterNames
  */
-async function doIntrapologyAnalysis(inkPath, filename, characterNames) {
+async function doIntrinsinkAnalysis(inkPath, filename, characterNames) {
     const issues = [];
     const fileStream = fs.createReadStream(inkPath);
 
@@ -131,7 +131,7 @@ function compile(compileInstruction, requester) {
 
     var mainInkPath = path.join(uniqueDirPath, compileInstruction.mainName);
 
-    const intrapologyAnalysis = doIntrapologyAnalysis(mainInkPath, compileInstruction.mainName, compileInstruction.characterNames);
+    const intrapologyAnalysis = doIntrinsinkAnalysis(mainInkPath, compileInstruction.mainName, compileInstruction.characterNames);
 
     var inklecateOptions = ["-ckj"];
 

@@ -1,3 +1,3 @@
-[submodule "app/intrapology-template"]
-	path = app/intrapology-template
-	url = git@github.com:squinky/intrapology-hello-world.git
+[submodule "app/intrinsink-template"]
+	path = app/intrinsink-template
+	url = git@github.com:squinky/intrinsink-hello-world.git

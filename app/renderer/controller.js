@@ -282,7 +282,7 @@ ToolbarView.setEvents({
             ipc.send("set-native-window-title", title);
         }
     },
-    runIntrapology: () => {
+    runIntrinsink: () => {
         LiveCompiler.exportJson(false, (err, compiledJsonTempPath) => {
             // TODO: better error message
             if( err ) {
